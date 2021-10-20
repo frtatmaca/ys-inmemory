@@ -3,7 +3,7 @@ package handler
 import (
 	"fmt"
 	"github.com/gin-gonic/gin"
-	. "gitlab.zfu.fintek.local/zfu/ys-inmemory/service"
+	. "github.com/frtatmaca/ys-inmemory/service"
 	"net/http"
 )
 

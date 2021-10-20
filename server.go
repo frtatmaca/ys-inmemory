@@ -2,8 +2,8 @@ package main
 
 import (
 	"github.com/gin-gonic/gin"
-	"gitlab.zfu.fintek.local/zfu/ys-inmemory/handler"
-	"gitlab.zfu.fintek.local/zfu/ys-inmemory/service"
+	"github.com/frtatmaca/ys-inmemory/handler"
+	"github.com/frtatmaca/ys-inmemory/service"
 )
 
 var (
