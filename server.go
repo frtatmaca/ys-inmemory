@@ -1,17 +1,19 @@
 package main
 
 import (
-	"github.com/gin-gonic/gin"
+	"github.com/frtatmaca/ys-inmemory/core"
 	"github.com/frtatmaca/ys-inmemory/handler"
 	"github.com/frtatmaca/ys-inmemory/service"
+	"github.com/gin-gonic/gin"
 )
 
 var (
-	fileService     service.FileService     = service.NewFileService()
-	inMemoryService service.InMemoryService = service.NewInMemoryService(fileService)
-	cronService     service.CronService     = service.NewCronService(inMemoryService)
-	inMemoryHandler handler.InMemoryHandler = handler.NewInMemoryHandler(inMemoryService)
-	fileHandler     handler.FileHandler     = handler.NewFileHandler()
+	repositoryAdapter core.RepositoryAdapter  = core.NewRepositoryAdapter()
+	fileService       service.FileService     = service.NewFileService(repositoryAdapter)
+	inMemoryService   service.InMemoryService = service.NewInMemoryService(fileService)
+	cronService       service.CronService     = service.NewCronService(inMemoryService)
+	inMemoryHandler   handler.InMemoryHandler = handler.NewInMemoryHandler(inMemoryService)
+	fileHandler       handler.FileHandler     = handler.NewFileHandler()
 )
 
 func init() {
