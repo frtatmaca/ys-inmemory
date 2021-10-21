@@ -1,58 +1,24 @@
 package service
 
 import (
-	"encoding/gob"
-	"log"
-	"os"
+	"github.com/frtatmaca/ys-inmemory/core"
+	"github.com/frtatmaca/ys-inmemory/models"
 )
 
 type FileService struct {
+	repositoryAdapter core.RepositoryAdapter
 }
 
-func NewFileService() FileService {
-	return FileService{}
+func NewFileService(repositoryAdapter core.RepositoryAdapter) FileService {
+	return FileService{repositoryAdapter}
 }
 
 func (p *FileService) ReadFile() map[string]string {
-	keyValStore := make(map[string]string, 0)
-
-	fileName := "test.gob"
-
-	if _, err := os.Stat(fileName); err == nil {
-		f, err := os.Open(fileName)
-		defer f.Close()
-
-		if err != nil {
-			log.Panicf("failed reading data from file: %s", err)
-		}
-
-		d := gob.NewDecoder(f)
-		err = d.Decode(&keyValStore)
-
-		if err != nil {
-			panic(err)
-		}
-	} else if os.IsNotExist(err) {
-		_, err := os.Create(fileName)
-
-		if err != nil {
-			log.Fatalf("failed creating file: %s", err)
-		}
-	}
-
-	return keyValStore
+	repo, _ := p.repositoryAdapter.NewFileRepository(models.GOB_REPOSITORY)
+	return repo.Read()
 }
 
 func (p *FileService) WriteFile(keyValStore map[string]string) bool {
-	fileName := "test.gob"
-
-	os.Remove(fileName)
-
-	f, _ := os.Create(fileName)
-
-	enc := gob.NewEncoder(f)
-	enc.Encode(keyValStore)
-
-	f.Close()
-	return true
+	repo, _ := p.repositoryAdapter.NewFileRepository(models.GOB_REPOSITORY)
+	return repo.WriteFile(keyValStore)
 }
